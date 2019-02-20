@@ -1,6 +1,6 @@
 # Starwars api
 
-This api allows to manage planets that appears on Starwars. It can add new Planets and also get planets from swapi.co. 
+This api allows to manage planets that appears on Starwars. It can add new Planets and also get planets from [swapi.co](https://swapi.co/). 
 
 # Running tests 
 In order to perform some tests it is required to have docker ce installed in your Linux distribution. Link to [Ubuntu installation](https://docs.docker.com/v17.12/install/linux/docker-ce/ubuntu/#install-docker-ce-1). 
