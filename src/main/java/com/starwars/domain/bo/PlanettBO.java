@@ -20,9 +20,6 @@ public class PlanettBO {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-//	@Autowired
-//    private GsonUtils gsonUtils;
-
 	@Autowired
 	private PlanetRepository planetRepository;
 	
@@ -39,7 +36,7 @@ public class PlanettBO {
 		planet.setName(planetVM.getName());
 		planet.setTerrain(planetVM.getTerrain());
 		planet.setClimate(planetVM.getClimate());
-		swapiPlanetRepository.getNumberOfFilmsByPlanetName(planetVM.getName());
+		planet.setNumberFilms(swapiPlanetRepository.getNumberOfFilmsByPlanetName(planetVM.getName()));
 		planetRepository.save(planet);
 	}
 
@@ -59,11 +56,11 @@ public class PlanettBO {
 		return planetRepository.findById(id);
 	}
 
-	public Planet deletePlanetById(Integer id) {
+	public void deletePlanetById(Integer id) {
 		Optional<Planet> planet = findPlanetById(id);
-		Planet p = planet.get();
-		planetRepository.delete(p);
-		return p;
+		if(planet.isPresent()) {
+			planetRepository.delete(planet.get());
+		}
 	}
 
 }

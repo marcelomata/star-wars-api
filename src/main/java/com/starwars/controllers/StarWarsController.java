@@ -30,45 +30,61 @@ public class StarWarsController {
 	private PlanettBO planetBo;
 
     @RequestMapping(value = "/planet", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> addPlanet(@RequestBody PlanetVM planet) {
-    	logger.info("Adding planet {}", planet.getName());
-    	planetBo.addPlanet(planet);
-		return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> addPlanet(@RequestBody PlanetVM planetVM) {
+    	logger.info("Adding planet {}", planetVM.getName());
+    	Planet planet = planetBo.findPlanetByName(planetVM.getName());
+    	if(planet != null) {
+    		return new ResponseEntity<>("This planet is already created.", HttpStatus.CONFLICT);
+    	}
+    	planetBo.addPlanet(planetVM);
+		return new ResponseEntity<>(HttpStatus.CREATED);
     }
     
-    @RequestMapping(value = "/planets", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getPlanets() {
+    @RequestMapping(value = "/planets", method = RequestMethod.GET)
+    public ResponseEntity<List<Planet>> getPlanets() {
     	logger.info("Getting all planets {}");
     	List<Planet> listOfPlanets = planetBo.getAllPlanets();
-    	return new ResponseEntity<>(listOfPlanets, HttpStatus.OK);
+    	if(listOfPlanets.size() == 0) {
+    		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    	}
+    	return new ResponseEntity<List<Planet>>(listOfPlanets, HttpStatus.OK);
     }
     
-    @RequestMapping(value = "/swapi/planets/", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getSwapiPlanets() {
+    @RequestMapping(value = "/swapi/planets", method = RequestMethod.GET)
+    public ResponseEntity<List<PlanetSwapi>> getSwapiPlanets() {
     	logger.info("Getting all planets from swapi {}");
     	List<PlanetSwapi> listOfPlanets = planetBo.getAllPlanetsSwapi();
-    	return new ResponseEntity<>(listOfPlanets, HttpStatus.OK);
+    	if(listOfPlanets.size() == 0) {
+    		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    	}
+    	return new ResponseEntity<List<PlanetSwapi>>(listOfPlanets, HttpStatus.OK);
     }
     
-    @RequestMapping(value = "/planet/{name}", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getPlanetByName(@PathVariable("name") String name) {
+    @RequestMapping(value = "/planet/name/{name}", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Planet> getPlanetByName(@PathVariable("name") String name) {
     	logger.info("Getting the planet with name {}" + name);
     	Planet planet = planetBo.findPlanetByName(name);
-    	return new ResponseEntity<>(planet, HttpStatus.OK);
+    	if(planet == null ) {
+    		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    	}
+    	return new ResponseEntity<Planet>(planet, HttpStatus.OK);
     }
     
     @RequestMapping(value = "/planet/{id}", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getPlanetById(@PathVariable("id") Integer id) {
     	logger.info("Getting the planet with id {}" + id);
     	Optional<Planet> planet = planetBo.findPlanetById(id);
+    	if(planet.get() == null ) {
+    		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    	}
     	return new ResponseEntity<>(planet, HttpStatus.OK);
     }
     
     @RequestMapping(value = "/planet/{id}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> deletePlanetById(@PathVariable("id") Integer id) {
     	logger.info("Removing the planet with id {}" + id);
-    	Planet planet = planetBo.deletePlanetById(id);
-    	return new ResponseEntity<>(planet, HttpStatus.OK);
+    	planetBo.deletePlanetById(id);
+    	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     
 }

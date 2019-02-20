@@ -35,5 +35,16 @@ public class Planet implements Serializable {
 	private String terrain;
 	
 	private Integer numberFilms;
+	
+	public Planet() {
+	}
+	
+	public Planet(Integer id, String name, String climate, String terrain, Integer numberFilms) {
+		this.id = id;
+		this.name = name;
+		this.climate = climate;
+		this.terrain = terrain;
+		this.numberFilms = numberFilms;
+	}
 
 }

@@ -1,8 +1,8 @@
 ---
 applications:
-- name: start-wars-api
+- name: star-wars-api
   memory: 256M
   instances: 1
   host: rest-service
   domain: guides.spring.io
-  path: build/libs/start-wars-api-0.1.0.jar
+  path: build/libs/star-wars-api-0.1.0.jar

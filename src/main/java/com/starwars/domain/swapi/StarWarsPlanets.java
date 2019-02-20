@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "count", "next", "previous", "results" })
-public class StartWarsPlanets implements Serializable {
+public class StarWarsPlanets implements Serializable {
 
 	@JsonProperty("count")
 	private Integer count;
@@ -26,7 +26,7 @@ public class StartWarsPlanets implements Serializable {
 	 * No args constructor for use in serialization
 	 * 
 	 */
-	public StartWarsPlanets() {
+	public StarWarsPlanets() {
 	}
 
 	/**
@@ -36,7 +36,7 @@ public class StartWarsPlanets implements Serializable {
 	 * @param count
 	 * @param next
 	 */
-	public StartWarsPlanets(Integer count, String next, Object previous, List<PlanetSwapi> planets) {
+	public StarWarsPlanets(Integer count, String next, Object previous, List<PlanetSwapi> planets) {
 		super();
 		this.count = count;
 		this.next = next;
